@@ -5,7 +5,9 @@ import junit.framework.TestSuite;
 import model.Product;
 import repository.StoreRepository;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -15,14 +17,36 @@ public class AppTest extends TestCase {
     private StoreRepository repository;
     private StoreController controller;
 
+    private void emptyFile() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter("testproducts.txt");
+        writer.print("");
+        writer.close();
+    }
+
     public void test_repo_stockAll() throws IOException {
-        repository = new StoreRepository();
-        repository.readFile("testproducts.txt");
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
         ArrayList<Product> allProducts;
+
+        Product p1 = new Product(56, "milk", "food", 10, "cora");
+        Product p2 = new Product(57, "milky", "food", 10, "cora");
+
+        repository.addNewProduct(p1);
+        repository.addNewProduct(p2);
+
         allProducts = repository.stockSituation();
-
-
         assertEquals(2,allProducts.size());
+    }
+
+    public void test_repo_add() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(56, "milk", "food", 10, "cora");
+        assertEquals(true,repository.addNewProduct(p));
+
     }
 
     /**

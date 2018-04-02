@@ -1,2 +1,3 @@
-44 lapte aliment 144 MegaImage
-1 paine aliment 100 MegaImage
+
+56 milk food 10 cora
+57 milky food 10 cora

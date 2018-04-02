@@ -6,13 +6,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class StoreRepository {
+	private String filename;
 	private ArrayList<Product> allProducts=new ArrayList<Product>();
+
+	public StoreRepository(String filename) {
+		this.filename = filename;
+	}
 
 	public ArrayList<Product> getAllProducts() {
 		return allProducts;
 	}
-	public void readFile(String fname) throws NumberFormatException, IOException{
-		FileInputStream f=new FileInputStream(fname);
+	public void readFile() throws NumberFormatException, IOException{
+		FileInputStream f=new FileInputStream(filename);
 		DataInputStream in = new DataInputStream(f);
 		BufferedReader buf =new BufferedReader(new InputStreamReader(in));
 		String rd;
@@ -25,9 +30,15 @@ public class StoreRepository {
 		}
 		in.close();
 	}
-	public String addNewProduct(Product p) throws IOException{
-		if(p.getCode()>0 && p.getQuantity()>=0 && p.getCode()<Integer.MAX_VALUE&&p.getQuantity()<Integer.MAX_VALUE&& !illegal(p.getName())){
-			BufferedWriter out = new BufferedWriter(new FileWriter("products.txt",true));
+	public boolean addNewProduct(Product p) throws IOException{
+		if(
+		        p.getCode()>0 &&
+				p.getQuantity()>=0 &&
+                p.getCode()<Integer.MAX_VALUE &&
+                p.getQuantity()<Integer.MAX_VALUE &&
+                p.getSupplier() != null &&
+                !illegal(p.getName())){
+			BufferedWriter out = new BufferedWriter(new FileWriter(filename,true));
 			int k=1;
 			for(Product i:allProducts){
 				if(i.getCode()==p.getCode()){
@@ -43,13 +54,14 @@ public class StoreRepository {
 			else{
 				System.err.println("This code already exists");
 				out.close();
-				return("This code already exists");
+				return false;
 			}
 		}
 		else{
-			return("code q");
+            System.err.println("One or more attributes are not valid");
+            return false;
 		}
-		return("success");
+		return true;
 	}
 
 	private boolean illegal(String name) {
