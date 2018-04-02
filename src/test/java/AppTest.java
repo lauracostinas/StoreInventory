@@ -39,7 +39,8 @@ public class AppTest extends TestCase {
         assertEquals(2,allProducts.size());
     }
 
-    public void test_repo_add() throws IOException {
+    @org.junit.Test
+    public void tc01_repo_add_pass() throws IOException {
         emptyFile();
         repository = new StoreRepository("testproducts.txt");
         repository.readFile();
