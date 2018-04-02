@@ -3,6 +3,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import model.Product;
+import org.junit.Before;
 import repository.StoreRepository;
 
 import java.io.FileNotFoundException;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
  */
 public class AppTest extends TestCase {
     private StoreRepository repository;
-    private StoreController controller;
 
     private void emptyFile() throws FileNotFoundException {
         PrintWriter writer = new PrintWriter("testproducts.txt");
@@ -39,16 +39,69 @@ public class AppTest extends TestCase {
         assertEquals(2,allProducts.size());
     }
 
-    @org.junit.Test
-    public void tc01_repo_add_pass() throws IOException {
+    public void test_tc1_repo_add_pass() throws IOException {
         emptyFile();
         repository = new StoreRepository("testproducts.txt");
         repository.readFile();
 
-        Product p = new Product(56, "milk", "food", 10, "cora");
+        Product p = new Product(1, "a", "abc", 0, "abc");
         assertEquals(true,repository.addNewProduct(p));
-
     }
+
+    public void test_tc2_repo_add_invalid_fields() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(-1, "ab c", "ab c", -1, "a bc");
+        assertEquals(false,repository.addNewProduct(p));
+    }
+
+    public void test_tc3_repo_add_null_strings() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(10, null, null, 100, null);
+        assertEquals(false,repository.addNewProduct(p));
+    }
+
+    public void test_tc4_repo_add_exceed_int() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(Integer.MAX_VALUE+1, "z", "1234abc", Integer.MAX_VALUE+1, "1234abc");
+        assertEquals(false,repository.addNewProduct(p));
+    }
+
+    public void test_tc5_repo_add_special_strings() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(0, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "&01", 1, "&01");
+        assertEquals(false,repository.addNewProduct(p));
+    }
+
+    public void test_tc6_repo_add_maxint_min1() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(Integer.MAX_VALUE-1, "milk", "*%&aaa", Integer.MAX_VALUE-1, "*%&aaa");
+        assertEquals(true,repository.addNewProduct(p));
+    }
+
+    public void test_tc7_repo_add_empty_string_maxint() throws IOException {
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p = new Product(Integer.MAX_VALUE, "", "", Integer.MAX_VALUE, "");
+        assertEquals(false,repository.addNewProduct(p));
+    }
+
 
     /**
      * Create the test case
