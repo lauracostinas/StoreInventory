@@ -1,3 +1,2 @@
 
-56 milk food 10 cora
-57 milky food 10 cora
+1 cocoa food 1 metro
