@@ -21,12 +21,12 @@ public class IntegrationTest extends TestCase {
 
     public void test_tc0_call_all() throws IOException{
         emptyFile();
-        test_tc2_repo_add_pass();
-        test_tc3_repo_category_no_products_match();
-        test_tc1_repo_stock_all();
+        tc2_repo_add_pass();
+        tc3_repo_category_no_products_match();
+        tc1_repo_stock_all();
     }
 
-    public void test_tc1_repo_stock_all() throws IOException {
+    public void tc1_repo_stock_all() throws IOException {
         repository = new StoreRepository("testproducts.txt");
         repository.readFile();
 
@@ -35,7 +35,7 @@ public class IntegrationTest extends TestCase {
         assertEquals(1,stock.size());
     }
 
-    public void test_tc2_repo_add_pass() throws IOException {
+    public void tc2_repo_add_pass() throws IOException {
         repository = new StoreRepository("testproducts.txt");
         repository.readFile();
 
@@ -43,7 +43,7 @@ public class IntegrationTest extends TestCase {
         assertEquals(true,repository.addNewProduct(p));
     }
 
-    public void test_tc3_repo_category_no_products_match() throws IOException {
+    public void tc3_repo_category_no_products_match() throws IOException {
         repository = new StoreRepository("testproducts.txt");
         repository.readFile();
 
