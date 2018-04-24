@@ -43,4 +43,19 @@ public class CoverageTest extends TestCase {
 
         assertEquals(0,foundProducts.size());
     }
+
+    public void test_tc3_repo_category_is_match() throws IOException{
+        emptyFile();
+        repository = new StoreRepository("testproducts.txt");
+        repository.readFile();
+
+        Product p1 = new Product(56, "milk", "food", 10, "cora");
+        Product p2 = new Product(57, "milky", "food", 10, "cora");
+
+        repository.addNewProduct(p1);
+        repository.addNewProduct(p2);
+        ArrayList<Product> foundProducts = repository.getProductsCategory("food");
+
+        assertEquals(2,foundProducts.size());
+    }
 }
